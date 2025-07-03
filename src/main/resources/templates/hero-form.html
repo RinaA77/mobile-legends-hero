@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${hero.idMHero == null ? 'Tambah Hero Baru' : 'Edit Hero'}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="mb-4" th:text="${hero.idMHero == null ? 'Form Tambah Hero Baru' : 'Form Edit Hero'}"></h2>
+
+    <form th:action="${hero.idMHero == null ? '/heroes/save' : '/heroes/update/' + hero.idMHero}" th:object="${hero}" method="post">
+        <div class="mb-3">
+            <label for="idHero" class="form-label">ID Hero:</label>
+            <input type="number" class="form-control" id="idHero" th:field="*{idHero}" required>
+        </div>
+        <div class="mb-3">
+            <label for="namaHero" class="form-label">Nama Hero:</label>
+            <input type="text" class="form-control" id="namaHero" th:field="*{namaHero}" required>
+        </div>
+        <div class="mb-3">
+            <label for="kategori" class="form-label">Kategori:</label>
+            <select class="form-select" id="kategori" th:field="*{kategori}" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option th:each="kategori : ${kategoriList}" th:value="${kategori}" th:text="${kategori}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="form-label">Gender:</label>
+            <select class="form-select" id="gender" th:field="*{gender}" required>
+                <option value="">-- Pilih Gender --</option>
+                <option value="MALE">MALE</option>
+                <option value="FEMALE">FEMALE</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Simpan</button>
+        <a th:href="@{/heroes}" class="btn btn-secondary">Batal</a>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

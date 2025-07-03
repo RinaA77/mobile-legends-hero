@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Hero Mobile Legends</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* ========================================================= */
+    /* Global & Latar Belakang */
+    /* ========================================================= */
+    body {
+        background-image: url('/images/ml_background.jpg'); /* Pastikan path ke gambar Anda benar */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed; /* Gambar tetap saat scroll */
+        color: white; /* Default text color for general content on dark background */
+    }
+
+    .container {
+        background-color: rgba(0, 0, 0, 0.7); /* Overlay gelap agar konten mudah dibaca */
+        padding: 20px;
+        border-radius: 8px; /* Sudut membulat */
+        margin-top: 20px; /* Sedikit margin dari atas */
+        margin-bottom: 20px; /* Sedikit margin dari bawah */
+    }
+
+    /* ========================================================= */
+    /* Judul (Daftar Hero Mobile Legends) */
+    /* ========================================================= */
+    .title-hero {
+        font-size: 3.5em; /* Ukuran font besar */
+        font-family: "Lucida Handwriting", cursive; /* Font yang diinginkan */
+        font-weight: bold; /* Bold */
+        color: #fcc200; /* Golden Poppy */
+        text-align: center;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Shadow untuk menonjolkan teks */
+    }
+
+    /* ========================================================= */
+    /* Tombol "Tambah Hero Baru" */
+    /* ========================================================= */
+    .btn-primary { /* Class untuk tombol "Tambah Hero Baru" */
+        background-color: #008080 !important; /* Teal */
+        border-color: #008080 !important;   /* Border Teal */
+        color: white !important; /* Tulisan putih */
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #66cdaa !important; /* Medium Aquamarine */
+        border-color: #66cdaa !important;
+        color: #333 !important; /* Tulisan mungkin lebih baik gelap saat hover */
+    }
+
+    /* ========================================================= */
+    /* Tombol Edit dan Hapus (menggunakan warna Bootstrap default) */
+    /* ========================================================= */
+    .btn-warning { /* Default Bootstrap: Kuning */
+        background-color: #ffc107 !important;
+        border-color: #ffc107 !important;
+        color: #212529 !important; /* Biasanya teks gelap */
+        font-weight: bold;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800 !important;
+        border-color: #e0a800 !important;
+        color: #212529 !important;
+    }
+
+    .btn-danger { /* Default Bootstrap: Merah */
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+        color: #fff !important; /* Biasanya teks putih */
+        font-weight: bold;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333 !important;
+        border-color: #c82333 !important;
+        color: #fff !important;
+    }
+
+    /* ========================================================= */
+    /* Tabel */
+    /* ========================================================= */
+    .table {
+        background-color: #008080; /* Latar belakang tabel utama (Teal) */
+        color: white; /* Warna tulisan di tabel menjadi putih */
+        border: 1px solid white; /* Border luar tabel */
+    }
+
+    /* Header Tabel */
+    .table-dark thead {
+        background-color: #006666; /* Teal lebih gelap untuk header */
+        color: white; /* Tulisan di header tetap putih */
+    }
+    .table-dark th {
+        border-bottom: 2px solid white; /* Garis bawah header */
+        border-top: none; /* Hilangkan garis atas default */
+    }
+
+    /* Isi Tabel (Body) */
+    .table tbody tr {
+        color: white; /* Pastikan tulisan di baris tabel juga putih */
+    }
+
+    .table-bordered th, .table-bordered td {
+        border-color: white !important; /* Border sel tabel menjadi putih */
+    }
+
+    /* Pesan "Belum ada hero yang terdaftar." */
+    .table tbody tr:last-child td.text-center {
+        background-color: rgba(0, 0, 0, 0.5); /* Latar belakang sedikit transparan */
+        color: white; /* Tulisan putih */
+        font-style: italic;
+    }
+
+    /* ========================================================= */
+    /* Pesan Flash (Alerts) */
+    /* ========================================================= */
+    .alert {
+        background-color: rgba(255, 255, 255, 0.8) !important; /* Agak transparan, putih */
+        color: #333 !important; /* Warna teks standar */
+        border-color: #ddd !important;
+    }
+    .alert .btn-close {
+        filter: invert(100%); /* Membuat ikon silang terlihat di latar belakang gelap */
+    }
+
+</style>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-4 title-hero">Daftar Hero Mobile Legends</h2>
+    <div th:if="${message}" th:classappend="${alertClass}" class="alert alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <a th:href="@{/heroes/new}" class="btn btn-primary mb-3">Tambah Hero Baru</a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>ID ML Hero</th>
+            <th>ID Hero</th>
+            <th>Nama Hero</th>
+            <th>Kategori</th>
+            <th>Gender</th>
+            <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hero : ${heroes}">
+            <td th:text="${hero.idMHero}"></td>
+            <td th:text="${hero.idHero}"></td>
+            <td th:text="${hero.namaHero}"></td>
+            <td th:text="${hero.kategori}"></td>
+            <td th:text="${hero.gender}"></td>
+            <td>
+                <a th:href="@{/heroes/edit/{id}(id=${hero.idMHero})}" class="btn btn-warning btn-sm me-2">Edit</a>
+                <a th:href="@{/heroes/delete/{id}(id=${hero.idMHero})}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Anda yakin ingin menghapus hero ini?');">Hapus</a>
+            </td>
+        </tr>
+        <tr th:if="${heroes.empty}">
+            <td colspan="6" class="text-center">Belum ada hero yang terdaftar.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
